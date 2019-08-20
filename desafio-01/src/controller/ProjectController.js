@@ -35,11 +35,8 @@ module.exports = {
         const { title } = request.body;
 
         const project = projects.find(prj => prj.id === id);
-        if (!project) {
-            return response.status(404).send(`Project with id ${id} was not found.`);
-        }
-
         project.title = title;
+
         return response.json(project);
     },
 
@@ -47,9 +44,7 @@ module.exports = {
         const { id } = request.params;
 
         const index = projects.findIndex(prj => prj.id === id);
-        if (index !== -1) {
-            projects.splice(index, 1);
-        }
+        projects.splice(index, 1);
 
         return response.send();
     },
@@ -59,11 +54,18 @@ module.exports = {
         const { title } = request.body;
 
         const project = projects.find(prj => prj.id === id);
-        if (!project) {
+        project.tasks.push(title);
+        
+        return response.status(201).json(project);
+    },
+
+    checkProjectExists(request, response, next) {
+        const { id } = request.params;
+
+        if (!projects.some(prj => prj.id === id)) {
             return response.status(404).send(`Project with id ${id} was not found.`);
         }
 
-        project.tasks.push(title);
-        return response.status(201).json(project);
+        return next();
     }
 }
