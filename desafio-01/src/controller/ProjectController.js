@@ -18,12 +18,13 @@ module.exports = {
     },
 
     create(request, response) {
-        const project = request.body;
+        const { id, title } = request.body;
 
-        if (projects.find(prj => prj.id === project.id)) {
-            return response.status(422).send(`Project with the id ${project.id} already exists.`);
+        if (projects.find(prj => prj.id === id)) {
+            return response.status(422).send(`Project with the id ${id} already exists.`);
         }
 
+        const project = { id, title, tasks: [] };
         projects.push(project);
 
         return response.status(201).json(project);
