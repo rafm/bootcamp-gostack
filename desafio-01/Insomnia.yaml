@@ -1,0 +1,178 @@
+_type: export
+__export_format: 4
+__export_date: 2019-08-20T23:23:42.733Z
+__export_source: insomnia.desktop.app:v6.6.2
+resources:
+  - _id: req_8cc1b6675941424c87c1f9fea04552a4
+    authentication: {}
+    body: {}
+    created: 1566337994426
+    description: ""
+    headers: []
+    isPrivate: false
+    metaSortKey: -1566339549181
+    method: GET
+    modified: 1566339591231
+    name: Find all Projects
+    parameters: []
+    parentId: wrk_5e1a511097f14d749217e5613e27133e
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{ host  }}/projects"
+    _type: request
+  - _id: wrk_5e1a511097f14d749217e5613e27133e
+    created: 1566337958803
+    description: ""
+    modified: 1566337958803
+    name: GoStack Bootcamp
+    parentId: null
+    _type: workspace
+  - _id: req_ca17ad6004694e31ae220a6c53b7d5c5
+    authentication: {}
+    body: {}
+    created: 1566339549131
+    description: ""
+    headers: []
+    isPrivate: false
+    metaSortKey: -1566339549131
+    method: GET
+    modified: 1566341932244
+    name: Find Project by id
+    parameters: []
+    parentId: wrk_5e1a511097f14d749217e5613e27133e
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{ host  }}/projects/1"
+    _type: request
+  - _id: req_a6c1bc75b8794acebb2cc82b38c50046
+    authentication: {}
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"id": "1",
+        	"title": "Novo projeto"
+        }
+    created: 1566338035645
+    description: ""
+    headers:
+      - id: pair_5c98a17923024343a591c45cf3feb97e
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1566338035645
+    method: POST
+    modified: 1566343279483
+    name: Create Project
+    parameters: []
+    parentId: wrk_5e1a511097f14d749217e5613e27133e
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{ host  }}/projects"
+    _type: request
+  - _id: req_02e464dbfa284fe2965de567ae6569cc
+    authentication: {}
+    body:
+      mimeType: application/json
+      text: |
+        {
+        	"title": "Projeto 3"
+        }
+    created: 1566340777689
+    description: ""
+    headers:
+      - id: pair_5a82e1efaa054f78818a3875ac2a1acb
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1566338035595
+    method: PUT
+    modified: 1566343144115
+    name: Update Project's title
+    parameters: []
+    parentId: wrk_5e1a511097f14d749217e5613e27133e
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{ host  }}/projects/1"
+    _type: request
+  - _id: req_c9f4533ce681472b865adcc7e39ec63b
+    authentication: {}
+    body: {}
+    created: 1566342255582
+    description: ""
+    headers: []
+    isPrivate: false
+    metaSortKey: -1566338035545
+    method: DELETE
+    modified: 1566343300649
+    name: Remove Project
+    parameters: []
+    parentId: wrk_5e1a511097f14d749217e5613e27133e
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{ host  }}/projects/1"
+    _type: request
+  - _id: req_a6247669f3504f34a26a28372a63e36e
+    authentication: {}
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"title": "Nova tarefa"
+        }
+    created: 1566342615210
+    description: ""
+    headers:
+      - id: pair_5c98a17923024343a591c45cf3feb97e
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1566338035495
+    method: POST
+    modified: 1566343287432
+    name: Create Task
+    parameters: []
+    parentId: wrk_5e1a511097f14d749217e5613e27133e
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{ host  }}/projects/1/tasks"
+    _type: request
+  - _id: env_69cd982bd0c38d9ff704f71db9ee7596f155322c
+    color: null
+    created: 1566337959024
+    data:
+      host: http://localhost:3000
+    dataPropertyOrder:
+      "&":
+        - host
+    isPrivate: false
+    metaSortKey: 1566337959024
+    modified: 1566337984698
+    name: Base Environment
+    parentId: wrk_5e1a511097f14d749217e5613e27133e
+    _type: environment
+  - _id: jar_69cd982bd0c38d9ff704f71db9ee7596f155322c
+    cookies: []
+    created: 1566337959027
+    modified: 1566337959027
+    name: Default Jar
+    parentId: wrk_5e1a511097f14d749217e5613e27133e
+    _type: cookie_jar
