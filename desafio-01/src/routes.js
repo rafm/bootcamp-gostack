@@ -6,6 +6,6 @@ router
     .get('/projects', ProjectController.findAll)
     .get('/projects/:id', ProjectController.findById)
     .post('/projects', ProjectController.create)
-    .put('/projects/:id', ProjectController.update);
+    .put('/projects/:id', ProjectController.updateTitle);
 
 module.exports = router;
