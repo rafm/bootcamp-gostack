@@ -5,6 +5,7 @@ const ProjectController = require('./controller/ProjectController');
 router
     .get('/projects', ProjectController.findAll)
     .get('/projects/:id', ProjectController.findById)
-    .post('/projects', ProjectController.create);
+    .post('/projects', ProjectController.create)
+    .put('/projects/:id', ProjectController.update);
 
 module.exports = router;

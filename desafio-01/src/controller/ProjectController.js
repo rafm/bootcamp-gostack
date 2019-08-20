@@ -1,9 +1,5 @@
 const projects = [];
 
-function _findById(id) {
-    return projects.filter(project => project.id === id)[0] || null;
-}
-
 module.exports = {
 
     findAll(request, response) {
@@ -13,7 +9,7 @@ module.exports = {
     findById(request, response) {
         const { id } = request.params;
 
-        const project = _findById(id);
+        const project = projects.find(prj => prj.id === id);
         if (!project) {
             return response.status(404).send(`Project with id ${id} was not found.`)
         }
@@ -24,12 +20,27 @@ module.exports = {
     create(request, response) {
         const project = request.body;
 
-        if (_findById(project.id)) {
+        if (projects.find(prj => prj.id === project.id)) {
             return response.status(422).send(`Project with the id ${project.id} already exists.`);
         }
 
         projects.push(project);
 
         return response.status(201).json(project);
+    },
+
+    update(request, response) {
+        const { id } = request.params;
+        const project = request.body;
+        project.id = id;
+
+        const index = projects.findIndex(prj => prj.id === id);
+        if (index == -1) {
+            projects.push(project);
+            return response.status(201).json(project);
+        }
+
+        projects[index] = project;
+        return response.json(project);
     }
 }
