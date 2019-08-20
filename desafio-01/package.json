@@ -11,5 +11,8 @@
     "url": "https://github.com/rafm/bootcamp-gostack"
   },
   "author": "Rafael Maia",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
