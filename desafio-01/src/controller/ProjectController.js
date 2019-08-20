@@ -51,5 +51,18 @@ module.exports = {
         }
 
         return response.send();
+    },
+
+    createTask(request, response) {
+        const { id } = request.params;
+        const { title } = request.body;
+
+        const project = projects.find(prj => prj.id === id);
+        if (!project) {
+            return response.status(404).send(`Project with id ${id} was not found.`);
+        }
+
+        project.tasks.push(title);
+        return response.status(201).json(project);
     }
 }
