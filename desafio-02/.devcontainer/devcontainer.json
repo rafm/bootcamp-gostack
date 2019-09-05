@@ -4,7 +4,7 @@
 	"dockerFile": "Dockerfile",
 
 	// Uncomment the next line if you want to publish any ports.
-	// "appPort": [],
+	"appPort": [3000],
 
 	// Uncomment the next line if you want to add in default container specific settings.json values
 	// "settings":  { "workbench.colorTheme": "Quiet Light" },
@@ -13,7 +13,7 @@
 
 	// Uncomment the next line to run commands after the container is created.
 	// "postCreateCommand": "yarn install",
-	
+
 	// Mount your .ssh folder to /root/.ssh-localhost so we can copy its contents
 	"runArgs": [ "-v", "${env:HOME}${env:USERPROFILE}/.ssh:/root/.ssh-localhost:ro" ],
 	// Copy the contents to the correct location and set permissions
