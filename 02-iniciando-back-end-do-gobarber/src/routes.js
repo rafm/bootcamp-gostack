@@ -1,4 +1,8 @@
-import express from 'express';
+import { Router } from 'express';
 
-export default express.Router()
-    .get('/', (request, response) => response.send('Hello world!'));
+// Router() = new Router()
+// call constructor/function and returns an object with the defined functions and attributes of the class
+const routes = new Router();
+routes.get('/', (request, response) => response.send('Hello world!'));
+
+export default routes;

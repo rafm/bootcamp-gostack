@@ -1,7 +1,3 @@
-import express from 'express';
-import routes from './routes';
+import app from './app';
 
-express()
-    .use(express.json())
-    .use(routes)
-    .listen(3000);
+app.listen(3000);
