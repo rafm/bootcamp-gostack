@@ -18,6 +18,14 @@ class UserController {
             provider,
         });
     }
+
+    async update(request, response) {
+        return response.json({
+            ok: true,
+            userId: request.userId,
+            pathId: request.params.id,
+        });
+    }
 }
 
 export default new UserController();
