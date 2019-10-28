@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import UserController from './app/controllers/UserController'
+import UserController from './app/controllers/UserController';
 
 // Router() = new Router()
 // call constructor/function and returns an object with the defined functions and attributes of the class
