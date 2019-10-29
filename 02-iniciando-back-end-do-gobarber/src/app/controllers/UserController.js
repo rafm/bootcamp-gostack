@@ -1,7 +1,23 @@
+import * as Yup from 'yup';
 import User from '../models/User';
 
 class UserController {
     async store(request, response) {
+        const schema = Yup.object().shape({
+            name: Yup.string().required(),
+            email: Yup.string()
+                .required()
+                .email(),
+            password: Yup.string()
+                .required()
+                .min(6),
+            provider: Yup.boolean(),
+        });
+
+        if (!(await schema.isValid(request.body))) {
+            return response.status(400).json({ error: 'Validation fails' });
+        }
+
         const userExists = await User.findOne({
             where: { email: request.body.email },
         });
@@ -20,10 +36,29 @@ class UserController {
     }
 
     async update(request, response) {
+        const schema = Yup.object().shape({
+            name: Yup.string(),
+            email: Yup.string().email(),
+            oldPassword: Yup.string().min(6),
+            password: Yup.string()
+                .min(6)
+                .when('oldPassword', (oldPassword, field) =>
+                    oldPassword ? field.required() : field
+                ),
+            confirmPassword: Yup.string().when('password', (password, field) =>
+                password ? field.required().oneOf([Yup.ref('password')]) : field
+            ),
+            provider: Yup.boolean(),
+        });
+
+        if (!(await schema.isValid(request.body))) {
+            return response.status(400).json({ error: 'Validation fails' });
+        }
+
         const { email, oldPassword, password } = request.body;
         const user = await User.findByPk(request.userId);
 
-        if (email !== user.email) {
+        if (email && email !== user.email) {
             const userExists = await User.findOne({
                 where: { email },
             });
