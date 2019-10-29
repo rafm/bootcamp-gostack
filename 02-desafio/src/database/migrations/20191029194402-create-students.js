@@ -7,26 +7,26 @@ module.exports = {
                 autoIncrement: true,
                 primaryKey: true,
             },
-            nome: {
+            name: {
                 type: Sequelize.STRING,
             },
             email: {
                 type: Sequelize.STRING,
             },
-            idade: {
+            age: {
                 type: Sequelize.INTEGER,
             },
-            peso: {
+            weight: {
                 type: Sequelize.INTEGER,
             },
-            altura: {
+            height: {
                 type: Sequelize.DECIMAL(3, 2),
             },
-            createdAt: {
+            created_at: {
                 allowNull: false,
                 type: Sequelize.DATE,
             },
-            updatedAt: {
+            updated_at: {
                 allowNull: false,
                 type: Sequelize.DATE,
             },
