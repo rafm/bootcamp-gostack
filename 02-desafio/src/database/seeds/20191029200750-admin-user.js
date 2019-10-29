@@ -15,7 +15,7 @@ module.exports = {
 
     down: queryInterface => {
         return queryInterface.bulkDelete('users', {
-            where: { email: 'admin@gympoint.com' },
+            email: 'admin@gympoint.com',
         });
     },
 };
