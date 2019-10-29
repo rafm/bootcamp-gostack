@@ -12,6 +12,6 @@ routes.post('/sessions', SessionController.store);
 
 routes.use(authMiddleware); // This middleware will be applied only to the next declared routes, not to the previous ones.
 
-routes.put('/users/:id', UserController.update);
+routes.put('/users', UserController.update);
 
 export default routes;
