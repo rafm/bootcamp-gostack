@@ -1,4 +1,8 @@
-import express from 'express';
+import { Router } from 'express';
+import SessionController from './app/controllers/SessionController';
 
-export default express.Router()
-    .get('/', (request, response) => response.send('Hello world!'));
+const routes = new Router();
+routes.get('/', (request, response) => response.send('Hello world!'));
+routes.post('/sessions', SessionController.store);
+
+export default routes;
