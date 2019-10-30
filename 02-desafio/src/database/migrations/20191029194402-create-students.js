@@ -19,10 +19,10 @@ module.exports = {
                 type: Sequelize.INTEGER,
             },
             weight: {
-                type: Sequelize.INTEGER,
+                type: Sequelize.DECIMAL(4, 1),
             },
             height: {
-                type: Sequelize.DECIMAL(3, 2),
+                type: Sequelize.INTEGER,
             },
             created_at: {
                 allowNull: false,
