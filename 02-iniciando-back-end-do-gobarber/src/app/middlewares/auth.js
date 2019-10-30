@@ -11,7 +11,7 @@ export default async (request, response, next) => {
     }
 
     const [, token] = authHeader.split(' ');
-    // const [, token] = authHeader.split(' '); // It can also be written in this way, as JS does not throw ArrayIndexOutOfBoundsException like Java = )
+    // const token = authHeader.split(' ')[1]; // It can also be written in this way, as JS does not throw ArrayIndexOutOfBoundsException like Java = )
 
     try {
         const decodedToken = await promisify(jwt.verify)(
