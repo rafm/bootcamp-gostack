@@ -42,18 +42,19 @@ class StudentController {
 
     async update(request, response) {
         const schema = Yup.object().shape({
-            name: Yup.string().required(),
-            email: Yup.string()
-                .required()
-                .email(),
+            name: Yup.string(),
+            email: Yup.string().email(),
             age: Yup.number()
+                .nullable()
                 .integer()
                 .min(2)
                 .max(150),
             weight: Yup.number()
+                .nullable()
                 .min(1)
                 .max(999),
             height: Yup.number()
+                .nullable()
                 .integer()
                 .min(10)
                 .max(350),
@@ -64,11 +65,18 @@ class StudentController {
         }
 
         const { id } = request.params;
-        const { email } = request.body;
-        const student = await Student.findByPk(id);
+        const { email: newEmail } = request.body;
 
-        if (!student || email !== student.email) {
-            const studentExists = await Student.findOne({ where: { email } });
+        const student = await Student.findByPk(id);
+        if (!student) {
+            return response
+                .status(400)
+                .json({ error: 'Student does not exist' });
+        }
+        if (newEmail && newEmail !== student.email) {
+            const studentExists = await Student.findOne({
+                where: { email: newEmail },
+            });
 
             if (studentExists) {
                 return response
@@ -77,10 +85,8 @@ class StudentController {
             }
         }
 
-        request.body.id = id;
-        const [{ name, age, weight, height }] = await Student.upsert(
-            request.body,
-            { returning: true }
+        const { name, email, age, weight, height } = await student.update(
+            request.body
         );
         return response.json({ id, name, email, age, weight, height });
     }
