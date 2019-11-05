@@ -25,6 +25,10 @@ class User extends Model {
         return this; // not required to return this model, but the teacher has recommended.
     }
 
+    static associate(models) {
+        this.belongsTo(models.File, { foreignKey: 'avatar_id' });
+    }
+
     checkPassword(password) {
         return bcrypt.compare(password, this.password_hash);
     }
