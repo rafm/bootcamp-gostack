@@ -1,4 +1,5 @@
 import express from 'express'; // const express = require('express');
+import path from 'path';
 import routes from './routes'; // const routes = require('./routes');
 
 import './database'; // When you won't gonna store the import value, you don't need to use the from keyword,
@@ -16,6 +17,10 @@ class App {
 
     middlewares() {
         this.server.use(express.json());
+        this.server.use(
+            '/files',
+            express.static(path.resolve(__dirname, '..', 'tmp', 'uploads'))
+        );
     }
 
     routes() {
