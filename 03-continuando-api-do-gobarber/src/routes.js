@@ -6,6 +6,7 @@ import authMiddleware from './app/middlewares/auth';
 import UserController from './app/controllers/UserController';
 import SessionController from './app/controllers/SessionController';
 import FileController from './app/controllers/FileController';
+import ProviderController from './app/controllers/ProviderController';
 
 // Router() = new Router()
 // call constructor/function and returns an object with the defined functions and attributes of the class
@@ -19,5 +20,7 @@ routes.use(authMiddleware); // This middleware will be applied only to the next 
 routes.put('/users', UserController.update);
 
 routes.post('/files', upload.single('file'), FileController.store);
+
+routes.get('/providers', ProviderController.index);
 
 export default routes;
