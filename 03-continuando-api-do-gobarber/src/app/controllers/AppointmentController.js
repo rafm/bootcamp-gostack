@@ -6,11 +6,18 @@ import Appointment from '../models/Appointment';
 
 class AppointmentController {
     async index(request, response) {
+        let { page = 1 } = request.query;
+        if (page < 1) {
+            page = 1;
+        }
+
         const appointments = await Appointment.findAll({
             where: {
                 user_id: request.userId,
                 canceled_at: null,
             },
+            offset: (page - 1) * 20,
+            limit: 20,
             order: ['date'],
             attributes: ['id', 'date'],
             include: [
