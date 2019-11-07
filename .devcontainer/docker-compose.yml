@@ -27,6 +27,7 @@ services:
     
     links:
       - postgresdb
+      - mongobarber
 
   postgresdb:
     image: postgres
@@ -36,3 +37,8 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: docker
       POSTGRES_DB: gobarber
+
+  mongobarber:
+    image: mongo
+    ports:
+      - "27017"
