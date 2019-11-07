@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { startOfHour, parseISO, isBefore, format } from 'date-fns';
+import { startOfHour, isBefore, format } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import User from '../models/User';
 import File from '../models/File';
@@ -53,12 +53,12 @@ class AppointmentController {
             return response.status(400).json({ error: 'Validation fails' });
         }
 
-        const { date, provider_id } = request.body;
+        const { date, provider_id } = schema.cast(request.body);
 
         /**
          * Check if request user is the user provider
          */
-        if (request.userId === +provider_id) {
+        if (request.userId === provider_id) {
             return response
                 .status(400)
                 .json({ error: 'Can not create an appointment with yourself' });
@@ -79,7 +79,7 @@ class AppointmentController {
         /**
          * Check for past dates
          */
-        const hourStart = startOfHour(parseISO(date));
+        const hourStart = startOfHour(date);
         if (isBefore(hourStart, new Date())) {
             return response
                 .status(400)
