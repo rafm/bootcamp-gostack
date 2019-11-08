@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
 import { startOfHour, isBefore, format, subHours } from 'date-fns';
 import pt from 'date-fns/locale/pt';
+import Mail from '../../lib/Mail';
 import User from '../models/User';
 import File from '../models/File';
 import Appointment from '../models/Appointment';
@@ -126,7 +127,15 @@ class AppointmentController {
     }
 
     async delete(request, response) {
-        const appointment = await Appointment.findByPk(request.params.id);
+        const appointment = await Appointment.findByPk(request.params.id, {
+            include: [
+                {
+                    model: User,
+                    as: 'provider',
+                    attributes: ['name', 'email'],
+                },
+            ],
+        });
         if (appointment.user_id !== request.userId) {
             return response.status(401).json({
                 error: "You don't have permission to cancel this appointment.",
@@ -144,6 +153,13 @@ class AppointmentController {
         appointment.canceled_at = currentDate;
 
         await appointment.save();
+
+        await Mail.sendMail({
+            subject: 'Agendamento cancelado',
+            text: 'Você tem um novo cancelamento',
+            to: `${appointment.provider.name} <${appointment.provider.email}>`,
+        });
+
         return response.json(appointment);
     }
 }
