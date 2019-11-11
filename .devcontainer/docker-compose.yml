@@ -42,3 +42,8 @@ services:
     image: mongo
     ports:
       - "27017"
+
+  redisbarber:
+    image: redis:alpine
+    ports:
+      - "6379"
