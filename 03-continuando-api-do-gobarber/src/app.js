@@ -1,5 +1,8 @@
-import express from 'express'; // const express = require('express');
 import path from 'path';
+import express from 'express'; // const express = require('express');
+import 'express-async-errors';
+import * as Sentry from '@sentry/node';
+import sentryConfig from './config/sentry';
 import routes from './routes'; // const routes = require('./routes');
 
 import './database'; // When you won't gonna store the import value, you don't need to use the from keyword,
@@ -11,11 +14,13 @@ class App {
     constructor() {
         this.server = express();
 
+        Sentry.init(sentryConfig);
         this.middlewares();
         this.routes();
     }
 
     middlewares() {
+        this.server.use(Sentry.Handlers.requestHandler());
         this.server.use(express.json());
         this.server.use(
             '/files',
@@ -25,6 +30,7 @@ class App {
 
     routes() {
         this.server.use(routes);
+        this.server.use(Sentry.Handlers.errorHandler());
     }
 }
 
