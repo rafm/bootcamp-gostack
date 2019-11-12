@@ -1,9 +1,10 @@
-import path from 'path';
 import express from 'express'; // const express = require('express');
-import 'express-async-errors';
+import path from 'path';
+import Youch from 'youch';
 import * as Sentry from '@sentry/node';
-import sentryConfig from './config/sentry';
+import 'express-async-errors';
 import routes from './routes'; // const routes = require('./routes');
+import sentryConfig from './config/sentry';
 
 import './database'; // When you won't gonna store the import value, you don't need to use the from keyword,
 // in this case, we just need to run the models mapping logic.
@@ -17,6 +18,7 @@ class App {
         Sentry.init(sentryConfig);
         this.middlewares();
         this.routes();
+        this.exceptionHandler();
     }
 
     middlewares() {
@@ -31,6 +33,14 @@ class App {
     routes() {
         this.server.use(routes);
         this.server.use(Sentry.Handlers.errorHandler());
+    }
+
+    exceptionHandler() {
+        this.server.use(async (error, request, response, next) => {
+            const errors = await new Youch(error, request).toJSON();
+
+            return response.status(500).json(errors);
+        });
     }
 }
 
