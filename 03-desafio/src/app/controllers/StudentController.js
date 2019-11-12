@@ -30,7 +30,7 @@ class StudentController {
         });
         if (studentExists) {
             return response
-                .status(400)
+                .status(422)
                 .json({ error: 'Student already exists' });
         }
 
@@ -70,7 +70,7 @@ class StudentController {
         const student = await Student.findByPk(id);
         if (!student) {
             return response
-                .status(400)
+                .status(404)
                 .json({ error: 'Student does not exist' });
         }
         if (newEmail && newEmail !== student.email) {
@@ -80,7 +80,7 @@ class StudentController {
 
             if (studentExists) {
                 return response
-                    .status(400)
+                    .status(422)
                     .json({ error: 'Student already exists' });
             }
         }
