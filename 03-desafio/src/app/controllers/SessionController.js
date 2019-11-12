@@ -12,7 +12,7 @@ class SessionController {
             password: Yup.string().required(),
         });
 
-        if (!(await schema.isValid(request.body))) {
+        if (!schema.isValidSync(request.body)) {
             return response.status(400).json({ error: 'Validation fails' });
         }
 

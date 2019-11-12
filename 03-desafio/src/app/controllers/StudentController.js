@@ -21,7 +21,7 @@ class StudentController {
                 .max(350),
         });
 
-        if (!(await schema.isValid(request.body))) {
+        if (!schema.isValidSync(request.body)) {
             return response.status(400).json({ error: 'Validation fails' });
         }
 
@@ -41,6 +41,7 @@ class StudentController {
     }
 
     async update(request, response) {
+        // TODO validate: at least one value / not empty
         const schema = Yup.object().shape({
             name: Yup.string(),
             email: Yup.string().email(),
@@ -60,7 +61,7 @@ class StudentController {
                 .max(350),
         });
 
-        if (!(await schema.isValid(request.body))) {
+        if (!schema.isValidSync(request.body)) {
             return response.status(400).json({ error: 'Validation fails' });
         }
 
