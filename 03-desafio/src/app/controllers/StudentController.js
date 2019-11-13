@@ -34,10 +34,9 @@ class StudentController {
                 .json({ error: 'Student already exists' });
         }
 
-        const { id, name, email, age, weight, height } = await Student.create(
-            request.body
-        );
-        return response.json({ id, name, email, age, weight, height });
+        const student = await Student.create(request.body);
+
+        return response.json(student);
     }
 
     async update(request, response) {
@@ -86,10 +85,9 @@ class StudentController {
             }
         }
 
-        const { name, email, age, weight, height } = await student.update(
-            request.body
-        );
-        return response.json({ id, name, email, age, weight, height });
+        const updatedStudent = await student.update(request.body);
+
+        return response.json(updatedStudent);
     }
 }
 
