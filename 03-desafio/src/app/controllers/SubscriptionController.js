@@ -8,6 +8,41 @@ import Queue from '../../lib/Queue';
 import SubscriptionMail from '../jobs/SubscriptionMail';
 
 class SubscriptionController {
+    async index(request, response) {
+        const schema = Yup.object().shape({
+            page: Yup.number()
+                .integer()
+                .min(1)
+                .default(1),
+        });
+
+        if (!schema.isValidSync(request.query)) {
+            return response.status(400).json({ error: 'Validation fails' });
+        }
+
+        const { page } = schema.cast(request.query);
+
+        const subscriptions = await Subscription.findAll({
+            where: { canceled_at: null },
+            offset: (page - 1) * 20,
+            limit: 20,
+        });
+
+        return response.json(subscriptions);
+    }
+
+    async find(request, response) {
+        const subscription = await Subscription.findByPk(request.params.id);
+
+        if (!subscription) {
+            return response
+                .status(404)
+                .json({ error: 'Subscription does not exist' });
+        }
+
+        return response.json(subscription);
+    }
+
     async store(request, response) {
         const schema = Yup.object().shape({
             student_id: Yup.number()
@@ -101,6 +136,139 @@ class SubscriptionController {
         });
 
         return response.json(createdSubscription);
+    }
+
+    async update(request, response) {
+        // TODO validate: at least one value / not empty
+        const schema = Yup.object()
+            .noUnknown() // TODO does not work
+            .shape({
+                student_id: Yup.number().integer(),
+                plan_id: Yup.number().integer(),
+                start_date: Yup.date().min(startOfDay(new Date())),
+            });
+
+        if (!schema.isValidSync(request.body)) {
+            return response.status(400).json({ error: 'Validation fails' });
+        }
+
+        const subscription = await Subscription.findByPk(request.params.id);
+
+        if (!subscription) {
+            return response
+                .status(404)
+                .json({ error: 'Subscription does not exist' });
+        }
+
+        const changesToSubscription = schema.cast(request.body);
+
+        if (
+            changesToSubscription.student_id &&
+            changesToSubscription.student_id !== subscription.student_id
+        ) {
+            const student = await Student.findByPk(
+                changesToSubscription.student_id
+            );
+            if (!student) {
+                return response
+                    .status(404)
+                    .json({ error: 'Student was not found' });
+            }
+        }
+
+        if (
+            changesToSubscription.plan_id &&
+            changesToSubscription.plan_id !== subscription.plan_id
+        ) {
+            const plan = await Plan.findByPk(changesToSubscription.plan_id);
+            if (!plan) {
+                return response
+                    .status(404)
+                    .json({ error: 'Plan was not found' });
+            }
+            /**
+             * Calculating subscription price
+             */
+            changesToSubscription.price = plan.price * plan.duration;
+        }
+
+        if (
+            changesToSubscription.start_date &&
+            changesToSubscription.start_date !== subscription.start_date
+        ) {
+            const plan = await Plan.findByPk(
+                changesToSubscription.plan_id || subscription.plan_id
+            ); // TODO Refactor
+            /**
+             *  Normalizing start_date
+             */
+            changesToSubscription.start_date = startOfDay(
+                changesToSubscription.start_date
+            );
+            /**
+             * Calculating and normalizing subscription end_date
+             */
+            changesToSubscription.end_date = endOfDay(
+                addMonths(changesToSubscription.start_date, plan.duration)
+            );
+            /**
+             * Checking if the user already has a subscription for the specified plan in the same period of time
+             */
+            const existsSubscription = await Subscription.findAll({
+                where: {
+                    id: {
+                        [Op.ne]: request.params.id,
+                    },
+                    student_id:
+                        changesToSubscription.student_id ||
+                        subscription.student_id,
+                    plan_id:
+                        changesToSubscription.plan_id || subscription.plan_id,
+                    start_date: {
+                        [Op.between]: [
+                            changesToSubscription.start_date,
+                            changesToSubscription.end_date,
+                        ],
+                    },
+                    end_date: {
+                        [Op.between]: [
+                            changesToSubscription.start_date,
+                            changesToSubscription.end_date,
+                        ],
+                    },
+                    canceled_at: null,
+                },
+            });
+            if (existsSubscription) {
+                return response.status(422).json({
+                    error:
+                        'This student already has a subscription for this plan in the same period',
+                });
+            }
+        }
+
+        const updatedSubscription = await subscription.update(
+            changesToSubscription
+        );
+
+        return response.json(updatedSubscription);
+    }
+
+    async delete(request, response) {
+        const subscription = await Subscription.findByPk(request.params.id);
+
+        if (!subscription) {
+            return response
+                .status(404)
+                .json({ error: 'Subscription does not exist' });
+        }
+
+        if (!subscription.canceled_at) {
+            subscription.canceled_at = new Date();
+            await subscription.save();
+        }
+
+        return response.json(subscription);
     }
 }
 
