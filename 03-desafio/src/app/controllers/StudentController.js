@@ -2,6 +2,40 @@ import * as Yup from 'yup';
 import Student from '../models/Student';
 
 class StudentController {
+    async index(request, response) {
+        const schema = Yup.object().shape({
+            page: Yup.number()
+                .integer()
+                .min(1)
+                .default(1),
+        });
+
+        if (!schema.isValidSync(request.query)) {
+            return response.status(400).json({ error: 'Validation fails' });
+        }
+
+        const { page } = schema.cast(request.query);
+
+        const students = await Student.findAll({
+            offset: (page - 1) * 20,
+            limit: 20,
+        });
+
+        return response.json(students);
+    }
+
+    async find(request, response) {
+        const student = await Student.findByPk(request.params.id);
+
+        if (!student) {
+            return response
+                .status(404)
+                .json({ error: 'Student does not exist' });
+        }
+
+        return response.json(student);
+    }
+
     async store(request, response) {
         const schema = Yup.object().shape({
             name: Yup.string().required(),
