@@ -6,6 +6,7 @@ import PlanController from './app/controllers/PlanController';
 import SubscriptionController from './app/controllers/SubscriptionController';
 import CheckinController from './app/controllers/CheckinController';
 import HelpOrderController from './app/controllers/HelpOrderController';
+import AnswerController from './app/controllers/AnswerController';
 
 const routes = new Router();
 routes.post('/sessions', SessionController.store);
@@ -33,5 +34,8 @@ routes.get('/subscriptions/:id', SubscriptionController.find);
 routes.post('/subscriptions', SubscriptionController.store);
 routes.put('/subscriptions/:id', SubscriptionController.update);
 routes.delete('/subscriptions/:id', SubscriptionController.delete);
+
+routes.get('/help-orders', AnswerController.index);
+routes.post('/help-orders/:id/answer', AnswerController.store);
 
 export default routes;
