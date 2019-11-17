@@ -10,6 +10,13 @@
             "name": "Launch Sucrase",
             "program": "${workspaceFolder}/node_modules/sucrase/bin/sucrase-node",
             "args": ["${workspaceFolder}/src/server.js"]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Sucrase Queue",
+            "program": "${workspaceFolder}/node_modules/sucrase/bin/sucrase-node",
+            "args": ["${workspaceFolder}/src/queue.js"]
         }
     ]
 }
