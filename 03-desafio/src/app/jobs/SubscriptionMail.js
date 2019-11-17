@@ -7,14 +7,14 @@ class SubscriptionMail {
         return 'SubscriptionMail';
     }
 
-    async handle({ data: { subscription } }) {
+    async handle({ data: { subscription, plan, student } }) {
         await Mail.sendMail({
-            to: `${subscription.student.name} <${subscription.student.email}>`,
+            to: `${student.name} <${student.email}>`,
             subject: 'Matrícula realizada',
             template: 'subscription',
             context: {
-                name: subscription.student.name,
-                plan: subscription.plan.title,
+                name: student.name,
+                plan: plan.title,
                 price: subscription.price,
                 start_date: format(
                     parseISO(subscription.start_date),
