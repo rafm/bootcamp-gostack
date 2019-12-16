@@ -25,6 +25,7 @@ services:
       - 03-gobarber-node_modules:/workspace/03-continuando-api-do-gobarber/node_modules
       - 03-desafio-node_modules:/workspace/03-desafio/node_modules
       - 04-react-node_modules:/workspace/04-introducao-ao-react/node_modules
+      - 04-desafio-node_modules:/workspace/04-desafio/node_modules
 
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
@@ -62,3 +63,4 @@ volumes:
   03-gobarber-node_modules:
   03-desafio-node_modules:
   04-react-node_modules:
+  04-desafio-node_modules:
