@@ -1,0 +1,23 @@
+header {
+    background-color: #4A90E2;
+    color: white;
+    padding: 20px;
+}
+
+header .app-name {
+    font-size: 30px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+header .user-profile {
+    float: right;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+header .user-profile .profile-icon {
+    height: 2em;
+    margin-left: 10px;
+    vertical-align: middle;
+}
